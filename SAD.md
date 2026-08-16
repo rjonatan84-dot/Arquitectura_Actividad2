@@ -199,7 +199,7 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 
 ## 3.1 Modelo Conceptual del Dominio
 
-```mermaid
+
 classDiagram
 
 class Paciente{
@@ -251,7 +251,7 @@ HistoriaClinica "1" --> "0..*" Tratamiento
 HistoriaClinica "1" --> "0..*" ExamenLaboratorio
 
 Examen*aboratorio "1" --> "1" ResultadoLa*oratorio
-```
+
 
 ---
 
