@@ -43,13 +43,12 @@ class ResultadoLaboratorio {
 
 Paciente "1" -- "0..*" Cita
 Medico "1" -- "0..*" Cita
-
 Paciente "1" -- "1" HistoriaClinica
+Medico "1" -- "0..*" HistoriaClinica
 
 HistoriaClinica "1" -- "0..*" Diagnostico
 HistoriaClinica "1" -- "0..*" Tratamiento
 HistoriaClinica "1" -- "0..*" ExamenLaboratorio
-
 ExamenLaboratorio "1" -- "1" ResultadoLaboratorio
 
 @enduml

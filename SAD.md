@@ -10,7 +10,7 @@
 
 **Modelo Arquitectónico:** Modelo 4+1 de Kruchten
 
-**Autores:** Equipo de trabajo
+**Autores:** Equipo de Trabajo
 
 **Asignatura:** Arquitectura del Software
 
@@ -28,7 +28,7 @@
 4. Vistas Arquitectónicas
 5. Consolidación de la Especificación Arquitectónica
 6. Conclusiones
-7. Referencias
+7. Referencias Bibliográficas
 
 ---
 
@@ -36,11 +36,11 @@
 
 ## 1.1 Propósito
 
-El presente documento tiene como propósito definir la arquitectura del Sistema Hospitalario Digital, describiendo los requisitos funcionales y no funcionales, las decisiones arquitectónicas, los componentes del sistema y las vistas arquitectónicas necesarias para comprender su estructura y funcionamiento.
+El presente documento tiene como propósito definir la arquitectura del Sistema Hospitalario Digital, describiendo los requisitos funcionales y no funcionales, las decisiones arquitectónicas, los componentes del sistema y las vistas arquitectónicas necesarias para comprender su estructura, comportamiento y evolución.
 
 ## 1.2 Alcance del Documento
 
-Este documento cubre la especificación arquitectónica del sistema utilizando los lineamientos de RUP y el modelo 4+1 de Kruchten.
+Este documento cubre la especificación arquitectónica del sistema utilizando los lineamientos de RUP y el modelo 4+1 de Kruchten, con enfoque en la gestión clínica, la atención de pacientes y la integración de servicios hospitalarios.
 
 ## 1.3 Acrónimos
 
@@ -60,7 +60,7 @@ Este documento cubre la especificación arquitectónica del sistema utilizando l
 
 ## 2.1 Descripción del Problema
 
-Las instituciones de salud requieren administrar grandes volúmenes de información clínica garantizando seguridad, disponibilidad y acceso oportuno a los datos. Los sistemas tradicionales generan problemas de duplicidad de información, errores de atención y dificultades de acceso a historias clínicas.
+Las instituciones de salud requieren administrar grandes volúmenes de información clínica, garantizando seguridad, disponibilidad y acceso oportuno a los datos. Los sistemas tradicionales presentan problemas de duplicidad de información, errores de atención, baja trazabilidad y dificultades para consultar historias clínicas en tiempo real.
 
 ## 2.2 Objetivos
 
@@ -93,8 +93,6 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 - Nómina.
 - Gestión financiera.
 
----
-
 ## 2.4 Stakeholders
 
 | Stakeholder | Rol |
@@ -106,8 +104,6 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 | Laboratorio | Procesamiento de exámenes |
 | Equipo TI | Soporte tecnológico |
 
----
-
 ## 2.5 Módulos Funcionales
 
 1. Gestión de Pacientes
@@ -115,8 +111,6 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 3. Gestión de Citas
 4. Laboratorios
 5. Seguridad y Auditoría
-
----
 
 ## 2.6 Requisitos Funcionales
 
@@ -152,8 +146,6 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 - RF-SEG-02 Gestionar roles.
 - RF-SEG-03 Auditar operaciones.
 
----
-
 ## 2.7 Requisitos No Funcionales
 
 ### Seguridad
@@ -176,8 +168,6 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 ### Mantenibilidad
 
 - RNF-MAN-01 Arquitectura basada en microservicios.
-
----
 
 ## 2.8 Restricciones
 
@@ -202,219 +192,234 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 ```mermaid
 classDiagram
 
-class Paciente{
-    +UUID idPaciente
-    +String nombre
-    +String correo
-    +String telefono
+class Paciente {
+    +idPaciente: UUID
+    +nombre: String
+    +correo: String
+    +telefono: String
 }
 
-class Medico{
-    +UUID idMedico
-    +String nombre
-    +String especialidad
+class Medico {
+    +idMedico: UUID
+    +nombre: String
+    +especialidad: String
 }
 
-class Cita{
-    +UUID idCita
-    +DateTime fechaHora
-    +String estado
+class Cita {
+    +idCita: UUID
+    +fechaHora: DateTime
+    +estado: String
 }
 
-class HistoriaClinica{
-    +UUID idHistoria
-    +Date fechaCreacion
+class HistoriaClinica {
+    +idHistoria: UUID
+    +fechaCreacion: Date
 }
 
-class Diagnostico{
-    +String descripcion
+class Diagnostico {
+    +descripcion: String
 }
 
-class Tratamiento{
-    +String descripcion
+class Tratamiento {
+    +descripcion: String
 }
 
-class ExamenLaboratorio{
-    +String tipoExamen
+class ExamenLaboratorio {
+    +tipoExamen: String
 }
 
-class ResultadoLaboratorio{
-    +String resultado
+class ResultadoLaboratorio {
+    +resultado: String
 }
 
-Paciente "1" --> "0..*" Cita
-Medico "1" --> "0..*" Cita
-Paciente "1" --> "1" HistoriaClinica
-
-HistoriaClinica "1" --> "0..*" Diagnostico
-HistoriaClinica "1" --> "0..*" Tratamiento
-HistoriaClinica "1" --> "0..*" ExamenLaboratorio
-
-Examen*aboratorio "1" --> "1" ResultadoLa*oratorio
+Paciente "1" -- "0..*" Cita
+Medico "1" -- "0..*" Cita
+Paciente "1" -- "1" HistoriaClinica
+HistoriaClinica "1" -- "0..*" Diagnostico
+HistoriaClinica "1" -- "0..*" Tratamiento
+HistoriaClinica "1" -- "0..*" ExamenLaboratorio
+ExamenLaboratorio "1" -- "1" ResultadoLaboratorio
 ```
 
+## 3.2 Estilo Arquitectónico
+
+### Arquitectura basada en Microservicios
+
+- Servicio de Pacientes
+- Servicio de Historias Clínicas
+- Servicio de Citas
+- Servicio de Laboratorios
+- Servicio de Seguridad
+
+## 3.3 Decisiones Arquitectónicas
+
+### ADR-01
+
+Arquitectura basada en microservicios.
+
+### ADR-02
+
+Database per Service.
+
+### ADR-03
+
+Autenticación mediante JWT y RBAC.
+
+### ADR-04
+
+Comunicación mediante API REST.
+
 ---
 
-# 4.2 Vista Conceptu*l
+# 4. Vistas Arquitectónicas
 
-```plantuml
-@startuml
+## 4.1 Vista de Contexto
 
-package *Dominio Pacientes" {
-}
+```mermaid
+flowchart LR
 
-package "D*minio Clínico" {
-}
+Paciente[Paciente]
+Medico[Médico]
+Enfermero[Enfermero]
+Administrador[Administrador]
 
-package "Domin*o Citas" {
-}
+subgraph SistemaHospitalario["Sistema Hospitalario Digital"]
+    GP[Gestión de Pacientes]
+    HC[Historias Clínicas]
+    GC[Gestión de Citas]
+    GL[Gestión de Laboratorios]
+end
 
-package "Dominio Lab*ratorios" {
-}
+LabExt[Laboratorio Externo]
+Notif[Servicio de Notificaciones]
 
-package "Dominio Se*uridad" {
-}
-
-@enduml
+Paciente --> GP
+Paciente --> GC
+Medico --> HC
+Medico --> GC
+Enfermero --> HC
+Administrador --> GP
+Administrador --> GC
+GL --> LabExt
+GC --> Notif
 ```
 
----
+## 4.2 Vista Conceptual
 
-# 4*3 Vista de Casos de Uso
+```mermaid
+flowchart LR
 
-```plantu*l
-@startuml
-
-left to right directi*n
-
-actor Paciente
-actor Medico
-act*r Administrador
-
-usecase "Registra* Paciente"
-usecase "Programar Cita*
-usecase "Consultar Historia Clíni*a"
-usecase "Registrar Diagnóstico"*usecase "Solicitar Examen"
-usecase*"Consultar Resultados"
-
-Administra*or --> "Registrar Paciente"
-Pacien*e --> "Programar Cita"
-Paciente --* "Consultar Resultados"
-
-Medico --* "Consultar Historia Clínica"
-Medi*o --> "Registrar Diagnóstico"
-Medi*o --> "Solicitar Examen"
-
-@enduml
-*``
-
----
-
-# 4.4 Vista Lógica
-
-```pl*ntuml
-@startuml
-
-package "Presenta*ión" {
-    [Portal Web]
-    [Aplic*ción Móvil]
-}
-
-package "Aplicación* {
-    [Pacientes]
-    [Citas]
-   *[Historias Clínicas]
-    [Laborato*ios]
-}
-
-package "Persistencia" {
- *  database PostgreSQL
-}
-
-[Portal W*b] --> [Pacientes]
-[Portal Web] --* [Citas]
-
-[Pacientes] --> PostgreS*L
-[Citas] --> PostgreSQL
-[Historia* Clínicas] --> PostgreSQL
-[Laborat*rios] --> PostgreSQL
-
-@enduml
+Paciente[Paciente] --> Cita[Cita]
+Cita --> HistoriaClinica[Historia Clínica]
+HistoriaClinica --> Examenes[Exámenes]
+Examenes --> Resultados[Resultados]
 ```
-*---
 
-# 4.5 Vista de Implementación*
-```plantuml
-@startuml
+## 4.3 Vista de Casos de Uso
 
-component *Frontend React"
+```mermaid
+flowchart LR
 
-component "API Ga*eway"
+Paciente[Paciente]
+Medico[Médico]
+Administrador[Administrador]
+Enfermero[Enfermero]
 
-component "Servicio Pacient*s"
-component "Servicio Citas"
-comp*nent "Servicio Historias Clínicas"*component "Servicio Laboratorios"
-*omponent "Servicio Seguridad"
+RegistrarPaciente[Registrar paciente]
+ProgramarCita[Programar cita]
+ConsultarResultados[Consultar resultados]
+ConsultarHistoria[Consultar historia clínica]
+RegistrarDiagnostico[Registrar diagnóstico]
+SolicitarExamen[Solicitar examen]
 
-dat*base PostgreSQL
+Paciente --> RegistrarPaciente
+Paciente --> ProgramarCita
+Paciente --> ConsultarResultados
+Medico --> ConsultarHistoria
+Medico --> RegistrarDiagnostico
+Medico --> SolicitarExamen
+Administrador --> RegistrarPaciente
+Enfermero --> ConsultarHistoria
+```
 
-"Frontend React" *-> "API Gateway"
+## 4.4 Vista Lógica
 
-"API Gateway" --* "Servicio Pacientes"
-"API Gateway* --> "Servicio Citas"
-"API Gateway* --> "Servicio Historias Clínicas"*"API Gateway" --> "Servicio Labora*orios"
-"API Gateway" --> "Servicio*Seguridad"
+```mermaid
+flowchart TD
 
-"Servicio Pacientes" -*> PostgreSQL
-"Servicio Citas" --> *ostgreSQL
-"Servicio Historias Clín*cas" --> PostgreSQL
-"Servicio Labo*atorios" --> PostgreSQL
+WEB[Portal Web]
+MOVIL[Aplicación Móvil]
 
-@enduml
-`*`
+PAC[Gestión Pacientes]
+CIT[Gestión Citas]
+HC[Gestión Historias Clínicas]
+LAB[Gestión Laboratorios]
 
----
+DB[(PostgreSQL)]
 
-# 4.6 Vista Física (Despli*gue)
+WEB --> PAC
+WEB --> CIT
+WEB --> HC
+MOVIL --> CIT
 
-```plantuml
-@startuml
+PAC --> DB
+CIT --> DB
+HC --> DB
+LAB --> DB
+```
 
-node *Cliente" {
-    artifact "Navegador*
-}
+## 4.5 Vista de Implementación
 
-cloud "Infraestructura Cloud" *
+```mermaid
+flowchart LR
 
-    node "Load Balancer"
+WEB[Frontend React]
+APIGW[API Gateway]
+PAC[Servicio Pacientes]
+CIT[Servicio Citas]
+HC[Servicio Historias Clínicas]
+LAB[Servicio Laboratorios]
+SEG[Servicio Seguridad]
+DB[(PostgreSQL)]
 
-    no*e "Kubernetes Cluster" {
+WEB --> APIGW
+APIGW --> PAC
+APIGW --> CIT
+APIGW --> HC
+APIGW --> LAB
+APIGW --> SEG
 
-        *ode "API Gateway"
+PAC --> DB
+CIT --> DB
+HC --> DB
+LAB --> DB
+```
 
-        node "S*rvicio Pacientes"
+## 4.6 Vista Física (Despliegue)
 
-        node "Servicio Citas"
+```mermaid
+flowchart TD
 
-        node "Servicio Historias Clínicas"
+User[Navegador Web]
+LB[Load Balancer]
+GW[API Gateway]
+PAC[Microservicio Pacientes]
+CIT[Microservicio Citas]
+HC[Microservicio Historias Clínicas]
+LAB[Microservicio Laboratorios]
+DB[(PostgreSQL)]
 
-        node "Servicio Laboratorios"
-    }
+User --> LB
+LB --> GW
+GW --> PAC
+GW --> CIT
+GW --> HC
+GW --> LAB
 
-    database "PostgreSQL"
-
-}
-
-"Navegador" --> "Load Balancer"
-
-"Load Balancer" --> "API Gateway"
-
-"API Gateway" --> "Servicio Pacientes"
-"API Gateway" --> "Servicio Citas"
-"API Gateway" --> "Servicio Historias Clínicas"
-"API Gateway" --> "Servicio Laboratorios"
-
-@enduml
+PAC --> DB
+CIT --> DB
+HC --> DB
+LAB --> DB
 ```
 
 ---
@@ -426,45 +431,46 @@ cloud "Infraestructura Cloud" *
 | Requisito | ADR | Vista |
 |------------|------|--------|
 | RF-PAC-01 | ADR-01 | Lógica |
-| RF-CIT-01 | ADR-01 | Casos de Uso |
-| RF-HC-01 | ADR-02 | Implementación |
+| RF-HC-01 | ADR-01 | Conceptual |
+| RF-CIT-01 | ADR-04 | Casos de Uso |
+| RF-LAB-02 | ADR-02 | Implementación |
 | RNF-SEG-01 | ADR-03 | Física |
 
 ## 5.2 Verificación de Coherencia
 
-La arquitectura garantiza la alineación entre requisitos funcionales, requisitos no funcionales, decisiones arquitectónicas y componentes tecnológicos.
+La arquitectura propuesta mantiene consistencia entre los requisitos funcionales, los requisitos no funcionales, las decisiones técnicas y las vistas arquitectónicas. Cada componente del sistema responde a objetivos de seguridad, disponibilidad, escalabilidad y mantenibilidad, evitando redundancias y contradicciones en la estructura general.
 
 ## 5.3 Justificación de Atributos de Calidad
 
 ### Seguridad
 
-Implementada mediante HTTPS, JWT y control de acceso basado en roles.
+Se implementa mediante HTTPS, JWT y control de acceso basado en roles, lo que permite proteger la información clínica y limitar el acceso a usuarios autorizados.
 
 ### Escalabilidad
 
-Implementada mediante microservicios desplegados sobre Kubernetes.
+La solución se apoya en microservicios y contenedores, permitiendo ampliar capacidades sin afectar de manera crítica el funcionamiento del sistema completo.
 
 ### Disponibilidad
 
-Garantizada mediante infraestructura cloud y balanceo de carga.
+La arquitectura contempla balanceo de carga, despliegue distribuido y redundancia mínima de servicios para garantizar continuidad operativa.
 
 ### Mantenibilidad
 
-Lograda mediante separación de responsabilidades entre servicios.
+La separación de responsabilidades entre servicios facilita la evolución del sistema, la incorporación de nuevas funcionalidades y el mantenimiento por módulos.
 
 ---
 
 # 6. Conclusiones
 
-La arquitectura propuesta permite gestionar de forma eficiente los procesos hospitalarios mediante una solución basada en microservicios, favoreciendo la escalabilidad, disponibilidad y seguridad de la información clínica.
+La arquitectura propuesta permite gestionar de forma eficiente los procesos hospitalarios mediante una solución basada en microservicios, favoreciendo la escalabilidad, la disponibilidad y la seguridad de la información clínica. La separación funcional por dominios permite reducir acoplamientos, mejorar trazabilidad y facilitar futuras extensiones del sistema.
 
-La utilización del modelo 4+1 facilita la comprensión de la arquitectura desde diferentes perspectivas y proporciona una guía clara para el desarrollo e implementación del sistema.
+La utilización del modelo 4+1 facilita la comprensión de la arquitectura desde distintas perspectivas, proporcionando una guía clara para el desarrollo, implementación y evolución del Sistema Hospitalario Digital.
 
 ---
 
 # 7. Referencias Bibliográficas
 
-- Kruchten, P. Architectural Blueprints—The 4+1 View Model.
+- Kruchten, P. Architectural Blueprints: The 4+1 View Model.
 - Bass, Clements & Kazman. Software Architecture in Practice.
 - Rational Unified Process (RUP).
 - ISO/IEC/IEEE 42010.
