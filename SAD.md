@@ -199,119 +199,58 @@ Diseñar una arquitectura de software segura, escalable y confiable para la gest
 
 ## 3.1 Modelo Conceptual del Dominio
 
-```plantuml
-@startuml
+```mermaid
+classDiagram
 
-class Paciente {
-    +idPaciente
-    +nombre
-    +correo
+class Paciente{
+    +UUID idPaciente
+    +String nombre
+    +String correo
+    +String telefono
 }
 
-class Medico {
-    +idMedico
-    +nombre
-    +especialidad
+class Medico{
+    +UUID idMedico
+    +String nombre
+    +String especialidad
 }
 
-class Cita {
-    +idCita
-    +fechaHora
-    +estado
+class Cita{
+    +UUID idCita
+    +DateTime fechaHora
+    +String estado
 }
 
-class HistoriaClinica {
-    +idHistoria
+class HistoriaClinica{
+    +UUID idHistoria
+    +Date fechaCreacion
 }
 
-class Diagnostico {
-    +descripcion
+class Diagnostico{
+    +String descripcion
 }
 
-class Tratamiento {
-    +descripcion
+class Tratamiento{
+    +String descripcion
 }
 
-class ExamenLaboratorio {
-    +tipo
+class ExamenLaboratorio{
+    +String tipoExamen
 }
 
-class ResultadoLaboratorio {
-    +resultado
+class ResultadoLaboratorio{
+    +String resultado
 }
 
-Paciente "1" -- "0..*" Cita
-Medico "1" -- "0..*" Cita
-Paciente "1" -- "1" HistoriaClinica
-HistoriaClinica "1" -- "0..*" Diagnostico
-HistoriaClinica "1" -- "0..*" Tratamiento
-HistoriaClinica "1" -- "0..*" ExamenLaboratorio
-ExamenLa*oratorio "1" -- "1" ResultadoLabor*torio
+Paciente "1" --> "0..*" Cita
+Medico "1" --> "0..*" Cita
+Paciente "1" --> "1" HistoriaClinica
 
-@enduml
-```
+HistoriaClinica "1" --> "0..*" Diagnostico
+HistoriaClinica "1" --> "0..*" Tratamiento
+HistoriaClinica "1" --> "0..*" ExamenLaboratorio
 
-## 3.2 Estilo *rquitectónico
-
-### Microservicios
-*Servicios independientes:
-
-- Servi*io de Pacientes
-- Servicio de Hist*rias Clínicas
-- Servicio de Citas
-* Servicio de Laboratorios
-- Servic*o de Seguridad
-
-## 3.3 Decisiones *rquitectónicas (ADR)
-
-### ADR-01
-
-*rquitectura de Microservicios.
-
-##* ADR-02
-
-Database per Service.
-
-##* ADR-03
-
-Autenticación mediante JW* y RBAC.
-
-### ADR-04
-
-Comunicación*REST entre servicios.
-
----
-
-# 4. V*stas Arquitectónicas
-
-# 4.1 Vista *e Contexto
-
-```plantuml
-@startuml
-*actor Paciente
-actor Medico
-actor *nfermero
-actor Administrador
-
-rect*ngle "Sistema Hospitalario Digital* {
-  usecase "Gestión Pacientes"
- *usecase "Historias Clínicas"
-  use*ase "Gestión Citas"
-  usecase "Lab*ratorios"
-}
-
-rectangle "Laboratori* Externo"
-rectangle "Servicio Noti*icaciones"
-
-Paciente --> "Gestión *itas"
-Paciente --> "Gestión Pacien*es"
-
-Medico --> "Historias Clínica*"
-Medico --> "Gestión Citas"
-
-Enfe*mero --> "Historias Clínicas"
-
-@en*uml
+Examen*aboratorio "1" --> "1" ResultadoLa*oratorio
 ```
 
 ---
